@@ -1,0 +1,35 @@
+{% extends 'store/base.html' %}
+
+
+{% block content %}
+    <div class="favorites-header">
+        <h2 class="favorites-h">Избранное</h2>
+    </div>
+    <section class="section" id="products">
+        {% if user_favorites_length|length == 0 %}
+                        <div class="basket-error">
+                            <h1 class="h-basket-error">Здесь пока ничего нет...</h1>
+                            <a href="{% url 'home' %}" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span>Главная</a>
+                        </div>
+                {% else %}
+        <div class="container favorites-page">
+            <div class="row">
+                {% for u in user_favorites %}
+                <div class="col-lg-4">
+                    <div class="item">
+                        <div class="thumb">
+                            <a href="{{u.product.get_absolute_url}}"><img src="{{u.product.photo.url}}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="{{u.product.get_absolute_url}}"><h4>{{u.product.name}}</h4></a>
+                            <span>{{u.product.price}} руб.</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

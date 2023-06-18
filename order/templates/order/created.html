@@ -1,0 +1,12 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<section class="section" id="products">
+        <div class="container successful-order">
+            <h1 class="search-text">Заказ успешно оформлен</h1>
+            <h2 class="search-text">Ваши заказы отображаются в профиле</h2>
+            <a href="{% url 'profile' user.username%}" class="btn btn-success d-block mx-auto btn-submit btn-success">Профиль</a>
+
+        </div>
+</section>
+{% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'store/base.html' %}
+
+
+{% block content %}
+    <section class="section single-p" id="product">
+<div class="review">
+<h2>Add Review</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Submit</button>
+</form>
+</div>
+    </section>
+{% endblock %}

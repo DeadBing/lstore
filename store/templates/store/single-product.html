@@ -1,0 +1,144 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% load favorite_tags %}
+{% block content %}
+
+    <section class="section single-p" id="product">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                <div class="left-images">
+                    <div class="container py-2">
+    <div class="row align-items-center">
+        <div class="col-lg-8 offset-lg-2" id="slider">
+            <div id="myCarousel" class="carousel slide shadow">
+                <!-- main slider carousel items -->
+                <div class="carousel-inner">
+                    <div class="active carousel-item" data-slide-number="0">
+                        <img src="{{product.photo.url}}" class="img-fluid">
+                    </div>
+                    <div class="carousel-item" data-slide-number="1">
+                        <img src="{{product.photo2.url}}" class="img-fluid">
+                    </div>
+                    <div class="carousel-item" data-slide-number="2">
+                        <img src="{{product.photo3.url}}" class="img-fluid">
+                    </div>
+                    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
+
+                </div>
+                <!-- main slider carousel nav controls -->
+
+
+                <ul class="carousel-indicators list-inline mx-auto border px-2">
+                    <li class="list-inline-item active d-flexx">
+                        <a id="carousel-selector-0" class="selected d-flexx" data-slide-to="0" data-target="#myCarousel">
+                            <img src="{{product.photo.url}}" class="img-fluid litimg">
+                        </a>
+                    </li>
+                    <li class="list-inline-item d-flexx">
+                        <a id="carousel-selector-1" class="d-flexx" data-slide-to="1" data-target="#myCarousel">
+                            <img src="{{product.photo2.url}}" class="img-fluid litimg">
+                        </a>
+                    </li>
+                    <li class="list-inline-item d-flexx">
+                        <a id="carousel-selector-2" class="d-flexx" data-slide-to="2" data-target="#myCarousel">
+                            <img src="{{product.photo3.url}}" class="img-fluid litimg">
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    <!--/main slider carousel-->
+</div>
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="right-content">
+                    <h4>{{product.name}}</h4>
+                    <div class="favorite">
+                        {% if user.is_authenticated %}
+                            {% if product|is_favorite:user %}
+                                <a class="favorites-a-added" href="{% url 'remove_from_favorite' product.id %}"><i class="fa fa-heart" aria-hidden="true"><span class="span-fav"> Убрать из избранного</span></i></a>
+                            {% else %}
+                                <a class="favorites-a-not-added" href="{% url 'add_to_favorite' product.id %}"><i class="fa fa-heart-o" aria-hidden="true"><span class="span-fav"> Добавить в избранное</span></i></a>
+                            {% endif %}
+                        {% else %}
+                                <a class="favorites-a-not-added" href="{% url 'login' %}"><i class="fa fa-heart-o" aria-hidden="true"><span class="span-fav"> Добавить в избранное</span></i></a>
+                        {% endif %}
+                    </div>
+                    <span class="price">{{product.price}} руб.</span>
+                    <span>Состав: {{product.materials}}</span>
+                    <span>{{product.description}}</span>
+                    <div class="total">
+                        <form action="{% url 'basket_add' product.pk %}" method="post">
+							<div>
+								{% csrf_token %}
+                                <div>
+							{{ form }}
+                                </div>
+							</div>
+                            {% if not request.user.is_authenticated %}
+                            <div class="button-add"><a href="{% url 'login' %}" class="btn btn-success">Добавить в корзину</a></div>
+                            {% else %}
+                            <div class="button-add"><button type="submit" class="btn btn-success">Добавить в корзину</button></div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+                <div class="review">
+                    <span class="review-span">Отзывы о товаре</span>
+                    {% for review in reviews %}
+                    <div class="review-detail">
+                      <div class="review-info">
+                          <div class="tf1">
+                              <div class="mf1">
+                              <p class="tf2">Автор: {{ review.user.username }}</p>
+                              </div>
+                              <div class="t3f">
+                              <span>Дата создания: {{ review.time_create }}</span>
+                              </div>
+                          </div>
+                      </div>
+                          <div class="order-details">
+                              <div class="re9">
+                              <p class="e88">Комментарий</p>
+                              <p class="e6r">{{ review.text }}</p>
+                              </div>
+                          </div>
+                      </div>
+                    {% empty %}
+                <div class="no-reviews">
+                    <h2>Отзывов пока нет...</h2>
+                </div>
+                    {% endfor %}
+                    </div>
+                <div class="create-review">
+                        <span class="red">Добавить отзыв</span>
+                    <div class="review-submit">
+                        <form action="{% url 'add_review' product.id %}" method="post">
+                          {% csrf_token %}
+                            <p class="txr">
+                          {{ form_review }}
+                            </p>
+                            <div class="review-submit-button">
+                          <button type="submit" class="btn btn-success">Опубликовать</button>
+                            </div>
+                        </form>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+

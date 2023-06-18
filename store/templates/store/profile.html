@@ -1,0 +1,49 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<section class="section" id="products">
+        <div class="container successful-order">
+            <h2>Добро пожаловать, {{user.username}}</h2>
+            <div class="orders">
+                <legend class="border-bottom mb-4">Ваши заказы</legend>
+                {% if user_orders %}
+                {% for o in user_orders %}
+                <div class="order-detail">
+                    <div class="order-info">
+                        <div class="tf1">
+                            <div class="mf1">
+                            <span class="tf2">Заказ от {{o.time_create}}</span>
+                            <span class="tf3">№ {{o.id}}</span>
+                            </div>
+                            <div class="t3f">
+                            <span class="tf2">{{o.get_total_cost}} ₽</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% for item in user_order_item %}
+                    {% if item.order.id == o.id %}
+                    <div class="order-details">
+                        <div class="re5">
+                                <div class="order-padding">
+                                    <p class="e6r">Наименование: {{item.product.name}}</p>
+                                    <p class="e6r">Количество: {{item.quantity}}</p>
+                                    <p class="e6r">Общая сумма: {{item.get_cost}} ₽</p>
+                                </div>
+                                <div class="oip1">
+                                    <img src="{{item.product.photo.url}}" class="order-imgg">
+                                </div>
+                        </div>
+                        </div>
+                    {% endif %}
+                    {% endfor %}
+                </div>
+                {% endfor %}
+                {% else %}
+                <h2>Здесь пока ничего нет</h2>
+                {% endif %}
+                </div>
+            </div>
+        </div>
+</section>
+{% endblock %}

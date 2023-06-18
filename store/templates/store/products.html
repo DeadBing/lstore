@@ -1,0 +1,46 @@
+{% extends 'store/base.html' %}
+
+
+{% block content %}
+    <div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner-content">
+                                                {% for c in product|slice:":1"%}
+                        <h2>{{c.category}}</h2>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section" id="products">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                {% for p in product %}
+                <div class="col-lg-4">
+                    <div class="item">
+                        <div class="thumb">
+                            <a href="{{p.get_absolute_url}}"><img src="{{p.photo.url}}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="{{p.get_absolute_url}}"><h4>{{p.name}}</h4></a>
+                            <span>{{p.price}} руб.</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+{% endblock %}
+

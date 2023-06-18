@@ -1,0 +1,51 @@
+{% extends 'store/base.html' %}
+
+
+{% block content %}
+<div class="page-heading" id="top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="inner-content">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section" id="products">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            {% if product.count > 0 %}
+            <h1 class="search-text">По запросу "{{q}}" найдено</h1>
+            {% else %}
+            <h1 class="search-text">По вашему запросу ничего не найдено</h1>
+            {% endif %}
+
+            <div class="row">
+                {% for p in product %}
+                <div class="col-lg-4">
+                    <div class="item">
+                        <div class="thumb">
+                            <a href="{{p.get_absolute_url}}"><img src="{{p.photo.url}}" alt=""></a>
+                        </div>
+                        <div class="down-content">
+                            <a href="{{p.get_absolute_url}}"><h4>{{p.name}}</h4></a>
+                            <span>{{p.price}} руб.</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="search-error">
+                <a href="{% url 'home' %}" class="btn btn-success btn-big">Главная</a>
+            </div>
+        </div>
+    </section>
+{% endblock %}

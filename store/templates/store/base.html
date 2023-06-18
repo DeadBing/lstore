@@ -1,0 +1,162 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="icon" href="{% static 'store/assets/images/favicon.png' %}" type="image/x-icon">
+    <title>{{title}}</title>
+
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'store/assets/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'store/assets/css/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'store/assets/css/templatemo-hexashop.css' %}">
+    <link rel="stylesheet" href="{% static 'store/assets/css/owl-carousel.css' %}">
+    <link rel="stylesheet" href="{% static 'store/assets/css/lightbox.css' %}">
+
+    </head>
+
+    <body>
+
+
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'home' %}" class="logo">
+                            <img  class="logo-image" src="{%  static 'store/assets/images/logo.png' %}">
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <ul class="nav">
+                            <li class="scroll-to-section"><a href="{% url 'home'  %}">Главная</a></li>
+                            <li class="submenu">
+                                <a href="javascript:;">Категории</a>
+                                <ul>
+                                    {% for c in categorys %}
+                                    <li><a href="{{c.get_absolute_url}}">{{c.name}}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                            <li>
+                                <form action="{% url 'search' %}" method="get">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" type="search" name="q" placeholder="Поиск...">
+                                        <div class="input-group-append">
+                                            <a href="{% url 'search' %}"></a><button class="btn btn-secondary" type="submit" style="background-color: #1D7373; border-color:#006363 "></a>
+                                            <i class="fa fa-search"></i>
+                                        </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </li>
+                            <li>
+                                <div class="btn-group">
+                                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-user" aria-hidden="true"></i></a>
+                                  </button>
+                                  <div class="dropdown-menu">
+                                      {% if not request.user.is_authenticated %}
+                                    <a class="dropdown-item" href="{% url 'login' %}">Войти</a>
+                                    <a class="dropdown-item" href="{% url 'register' %}">Регистрация</a>
+                                      {% endif %}
+                                      {% if request.user.is_authenticated %}
+                                      <a class="dropdown-item" href="{% url 'profile' user.username %}">Профиль</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'logout' %}">Выйти</a>
+                                      {% endif %}
+                                  </div>
+                                </div>
+                            </li>
+                            <li>
+                                {% if request.user.is_authenticated %}
+                                <a href="{% url 'favorites' %}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                {% else %}
+                                <a href="{% url 'login' %}"><i class="fa fa-heart" aria-hidden="true"></i></a>
+                                {% endif %}
+                            </li>
+                            <li>
+                                {% if not request.user.is_authenticated %}
+                                <a class="basket-menu" href="{% url 'login' %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+  <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
+</svg></a>
+                                {% else %}
+                                <a class="basket-menu" href="{% url 'basket_detail' %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-basket" viewBox="0 0 16 16">
+  <path d="M5.757 1.071a.5.5 0 0 1 .172.686L3.383 6h9.234L10.07 1.757a.5.5 0 1 1 .858-.514L13.783 6H15a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1v4.5a2.5 2.5 0 0 1-2.5 2.5h-9A2.5 2.5 0 0 1 1 13.5V9a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h1.217L5.07 1.243a.5.5 0 0 1 .686-.172zM2 9v4.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V9H2zM1 7v1h14V7H1zm3 3a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 4 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 6 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3A.5.5 0 0 1 8 10zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5zm2 0a.5.5 0 0 1 .5.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 1 .5-.5z"/>
+</svg></a>
+                                {% endif %}
+                            </li>
+                        </ul>
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- ***** Footer Start ***** -->
+    <footer>
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2023 Lister&Co
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="{% static 'store/assets/js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'store/assets/js/popper.js' %}"></script>
+    <script src="{% static 'store/assets/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'store/assets/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'store/assets/js/accordions.js' %}"></script>
+    <script src="{% static 'store/assets/js/datepicker.js' %}"></script>
+    <script src="{% static 'store/assets/js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'store/assets/js/waypoints.min.js' %}"></script>
+    <script src="{% static 'store/assets/js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'store/assets/js/imgfix.min.js' %}"></script>
+    <script src="{% static 'store/assets/js/slick.js' %}"></script>
+    <script src="{% static 'store/assets/js/lightbox.js' %}"></script>
+    <script src="{% static 'store/assets/js/isotope.js' %}"></script>
+    <script src="{% static 'store/assets/js/custom.js' %}"></script>
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+              $("."+selectedClass).fadeIn();
+              $("#portfolio").fadeTo(50, 1);
+            }, 500);
+
+            });
+        });
+
+    </script>
+
+  </body>
+</html>

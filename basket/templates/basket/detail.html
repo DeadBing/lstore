@@ -1,0 +1,78 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<section class="section" id="men">
+    {% if basket|length == 0 %}
+    <div class="basket-error">
+        <h1 class="h-basket-error">Ваша корзина пуста</h1>
+        <a href="{% url 'home' %}" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span>Главная</a>
+    </div>
+    {% else %}
+    <h1 class="h-basket">Корзина</h1>
+    <div class="width-b col-md-9 col-sm-8 content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-info panel-shadow">
+                    <div class="panel-body">
+                        <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>Товар</th>
+                                <th>Описание</th>
+                                <th>Количество</th>
+                                <th>Цена</th>
+                                <th>Общая</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for b in basket %}
+                                <tr>
+
+                                    <td><img src="{{b.product.photo.url}}" class="img-cart"></td>
+                                    <td><strong>{{b.product.name}}</strong><p>Размер: {{b.size}}</p></td>
+                                    <td>
+                                    <form class="form-inline">
+                                        <a class="form-control">{{b.quantity}}</a>
+                                    </form>
+                                    </td>
+                                    <td>{{b.product.price}} руб.</td>
+                                    <td>{% widthratio b.product.price 1 b.quantity %} руб.</td>
+                                    <td>
+                                          <form action="{% url 'basket_remove' b.product.pk %}" method="post">
+                                                          <div>
+                                                              {% csrf_token %}
+                                                          {{ AddBasketForm }}
+                                                          </div>
+                                              <button class="btn btn-primary" type="submit" value="Удалить"><i class="fa fa-trash-o"></i></button>
+                                          </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                                <tr>
+                                    <td colspan="4" class="text-right"><strong>Итоговая цена:</strong></td>
+                                    <td>{{basket.get_total_price}} руб.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                </div>
+                <div class="basket-buttons">
+                <a href="{% url 'home' %}" class="btn btn-success"><span class="glyphicon glyphicon-arrow-left"></span>&nbsp;Вернуться</a>
+                    {% if not request.user.is_authenticated %}
+                    <a href="{% url 'login' %}" class="btn btn-primary pull-right">Далее<span class="glyphicon glyphicon-chevron-right"></span></a>
+                    {% else %}
+                    {% if basket|length > 0 %}
+                    <a href="{% url 'order_create' %}" class="btn btn-primary pull-right">Далее<span class="glyphicon glyphicon-chevron-right"></span></a>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
